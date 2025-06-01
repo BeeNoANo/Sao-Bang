@@ -102,52 +102,59 @@
     const galaxy = document.getElementById('galaxy');
     let rotationX = 0;
     let rotationY = 0;
+
+    // Biến cho chuột
     let isDragging = false;
     let lastX = 0;
     let lastY = 0;
 
+    // Biến cho cảm ứng
+    let isTouching = false;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+
     const messages = [
       "Bé yêu của anh nhiều lắm",
-"Thiên thần nhỏ của tớ",
-"Bé iu nhớ ăn sáng nhoa",
-"Chúc bé 1/6 thật vui nha",
-"Mau ăn chóng lớn nha ",
-"Không được thức khuya ấy nhá ",
-"Yêu bé nhiều hơn mọi thứ ",
-"Xinh đẹp và hạnh phúc nhé ",
-"Hihihi iu bé ghê ",
-"Quốc tế thiếu nhi vui vẻ nhoa ",
-"Thương bé mãi mãi ",
-"Mãi yêu bé nha ",
-"Tim anh chỉ dành cho bé",
-"Vui vẻ, hạnh phúc nhoe Đan iu của tớ",
-"Cưng bé lắm nha",
-"Cô bé đáng yêu của anh",
-"Chụt chụt bé yêu 💋",
-"Ăn uống đủ bữa mới ngoan ngoãn nha 🤗",
-"Ngủ sớm nữa nhaa 🌟",
-"Mèo con bé bỏng của anh 🐱",
-"Ngoan anh dẫn đi chơi hihi ",
-"Ngủ ngoan mơ đẹp nhé, cầu mong cho bé không dậy đêm nữa 💐😊",
-"Bé thích gì anh sẽ mua 🎁",
-"Tắm chung đê 🚿🚿",
-"Bé yêu ơi, cười thật tươi nha ",
-"Thiên thần bé nhỏ của anh 👼❤️",
-"Yêu bé đến tận cùng 😘💕",
-"Chúc bé luôn vui vẻ nha 🎉😊",
-"Yêu lắm đó, nhớ bé mọi lúc luôn 🥰💓",
-"Hello người đẹp của anh 👋🌹",
-"Yêu bé cả thế giới 💓🌍",
-"Xinh đẹp, vui vẻ nha 🌷💫",
-"Cưng bé cực luôn 🥺💞",
-"Thương bé cả đời 🥰💘",
-"Iu bé hơn cả trời xanh",
-"Mãi mãi bên bé nhé 💘💖",
-"👅👅👅🦪💦💦💦",
-"Muốn ôm bé ngủ ghê ấy trời",
-"Mai mốt tắm nhớ bật cam nha",
-"Iu ghê :Đ",
-"Muốn QHTD Quan tâm - Hiền Dịu - Tình iu - Dam"
+      "Thiên thần nhỏ của tớ",
+      "Bé iu nhớ ăn sáng nhoa",
+      "Chúc bé 1/6 thật vui nha",
+      "Mau ăn chóng lớn nha ",
+      "Không được thức khuya ấy nhá ",
+      "Yêu bé nhiều hơn mọi thứ ",
+      "Xinh đẹp và hạnh phúc nhé ",
+      "Hihihi iu bé ghê ",
+      "Quốc tế thiếu nhi vui vẻ nhoa ",
+      "Thương bé mãi mãi ",
+      "Mãi yêu bé nha ",
+      "Tim anh chỉ dành cho bé",
+      "Vui vẻ, hạnh phúc nhoe Đan iu của tớ",
+      "Cưng bé lắm nha",
+      "Cô bé đáng yêu của anh",
+      "Chụt chụt bé yêu 💋",
+      "Ăn uống đủ bữa mới ngoan ngoãn nha 🤗",
+      "Ngủ sớm nữa nhaa 🌟",
+      "Mèo con bé bỏng của anh 🐱",
+      "Ngoan anh dẫn đi chơi hihi ",
+      "Ngủ ngoan mơ đẹp nhé, cầu mong cho bé không dậy đêm nữa 💐😊",
+      "Bé thích gì anh sẽ mua 🎁",
+      "Tắm chung đê 🚿🚿",
+      "Bé yêu ơi, cười thật tươi nha ",
+      "Thiên thần bé nhỏ của anh 👼❤️",
+      "Yêu bé đến tận cùng 😘💕",
+      "Chúc bé luôn vui vẻ nha 🎉😊",
+      "Yêu lắm đó, nhớ bé mọi lúc luôn 🥰💓",
+      "Hello người đẹp của anh 👋🌹",
+      "Yêu bé cả thế giới 💓🌍",
+      "Xinh đẹp, vui vẻ nha 🌷💫",
+      "Cưng bé cực luôn 🥺💞",
+      "Thương bé cả đời 🥰💘",
+      "Iu bé hơn cả trời xanh",
+      "Mãi mãi bên bé nhé 💘💖",
+      "👅👅👅🦪💦💦💦",
+      "Muốn ôm bé ngủ ghê ấy trời",
+      "Mai mốt tắm nhớ bật cam nha",
+      "Iu ghê :Đ",
+      "Muốn QHTD Quan tâm - Hiền Dịu - Tình iu - Dam"
     ];
 
     // Tạo sao nền trong lớp cố định
@@ -205,13 +212,12 @@
       if (Math.random() < 0.3) createMeteor();
     }, 3000);
 
-    // Điều khiển xoay không gian 3D
+    // Xử lý chuột desktop
     document.addEventListener('mousedown', (e) => {
       isDragging = true;
       lastX = e.clientX;
       lastY = e.clientY;
     });
-
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
       const dx = e.clientX - lastX;
@@ -222,8 +228,36 @@
       lastX = e.clientX;
       lastY = e.clientY;
     });
-
     document.addEventListener('mouseup', () => isDragging = false);
+
+    // Thêm xử lý cảm ứng mobile
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) { // 1 ngón tay kéo
+        isTouching = true;
+        lastTouchX = e.touches[0].clientX;
+        lastTouchY = e.touches[0].clientY;
+      }
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!isTouching) return;
+      if (e.touches.length === 1) {
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const dx = touchX - lastTouchX;
+        const dy = touchY - lastTouchY;
+        rotationY += dx * 0.3;
+        rotationX -= dy * 0.3;
+        galaxy.style.transform = `translate(-50%, -50%) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+        lastTouchX = touchX;
+        lastTouchY = touchY;
+      }
+      e.preventDefault(); // ngăn cuộn trang khi kéo
+    }, { passive: false });
+
+    document.addEventListener('touchend', () => {
+      isTouching = false;
+    });
 
     // Tự động phát nhạc khi có tương tác đầu tiên
     const music = document.getElementById('bg-music');
