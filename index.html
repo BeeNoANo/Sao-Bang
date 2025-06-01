@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Không gian tình yêu</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle, #0a0a0a, #000000);
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Lớp nền cố định chứa sao và sao băng */
+    .background-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 6px white;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    .meteor {
+      position: absolute;
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, white, rgba(255,255,255,0));
+      opacity: 0.8;
+      transform: rotate(-45deg);
+      animation: meteor-fall 1s linear forwards;
+    }
+
+    @keyframes meteor-fall {
+      0% {
+        transform: translate(0, 0) rotate(-45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-600px, 600px) rotate(-45deg);
+        opacity: 0;
+      }
+    }
+
+    .galaxy-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg) scale(1);
+      will-change: transform;
+      z-index: 1;
+    }
+
+    .text-particle {
+      position: absolute;
+      color: #ff6b9d;
+      font-size: 16px;
+      font-weight: 600;
+      white-space: nowrap;
+      text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 2px 2px 6px rgba(0,0,0,0.8);
+      transform-style: preserve-3d;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+  </style>
+</head>
+<body>
+  <!-- Lớp nền cố định chứa sao và sao băng -->
+  <div class="background-layer" id="background"></div>
+
+  <!-- Hiệu ứng chữ rơi và không gian 3D chịu ảnh hưởng xoay -->
+  <div class="galaxy-container" id="galaxy"></div>
+
+  <audio id="bg-music" src="music.mp3" loop></audio>
+
+  <script>
+    const background = document.getElementById('background');
+    const galaxy = document.getElementById('galaxy');
+    let rotationX = 0;
+    let rotationY = 0;
+    let isDragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    const messages = [
+      "Bé yêu của anh nhiều lắm 🥰💖", "Thiên thần nhỏ của tớ 👼🌟", "Yêu bé vô vàn 😘💕", "Chúc bé 1/6 thật vui nha 🎉🎈", "Thương bé như con 💕🐣", "Hello cô nàng dễ thương 👋🌸", "Yêu bé nhiều hơn mọi thứ 💓😊", "Xinh đẹp và hạnh phúc nhé 🌷✨", "Hihihi iu bé ghê 😄😍", "Cưng bé vô đối 🥺💞", "Thương bé mãi mãi 🥰💘", "Mãi yêu bé nha 😍😍", "Tim anh chỉ dành cho bé 💘💘", "Iu bé thật nhiều 🥰💖", "Cưng bé lắm nha 😍💓", "Cô bé đáng yêu của anh 👧💫", "Chụt chụt bé yêu 💋💋😘", "Muốn ôm bé mãi 🤗❤️", "Bé iu xinh xắn tuyệt vời 🌟😍", "Mèo con bé bỏng của anh 🐱💞", "Muốn bên bé mọi lúc 🥰🤗", "Chúc bé hạnh phúc suốt đời 💐😊", "Bé thích gì anh sẽ mua 🎁😉", "Thương bé nhiều nhiều 🥺💖", "Bé yêu ơi, cười thật tươi nha 😊🌈", "Thiên thần bé nhỏ của anh 👼❤️", "Yêu bé đến tận cùng 😘💕", "Chúc bé luôn vui vẻ nha 🎉😊", "Thương bé không rời 🥰💓", "Hello người đẹp của anh 👋🌹", "Yêu bé cả thế giới 💓🌍", "Xinh đẹp, vui vẻ nha 🌷💫", "Hihihi iu bé quá đi mất 😄😍", "Cưng bé cực luôn 🥺💞", "Thương bé cả đời 🥰💘", "Iu bé hơn cả trời xanh 😍😍", "Mãi mãi bên bé nhé 💘💖", "Iu bé thật nhiều nha 🥰💓", "Cưng lắm, bé ơi 😍💞", "Cô bé nhỏ dễ thương của anh 👧🌸", "Chụt chụt yêu bé 💋💋😘", "Muốn ôm bé mãi luôn 🤗❤️", "Bé xinh đẹp nhất đời 🌟😍", "Mèo con nhỏ của anh 🐱💞", "Muốn luôn bên bé nha 🥰🤗", "Chúc bé luôn hạnh phúc 💐😊", "Bé thích gì anh chiều 🎁😉", "Thương bé vô hạn 🥺💖", "Bé yêu của anh nhất 🥰💓", "Thiên thần nhỏ đáng yêu 👼✨", "Yêu bé hết lòng 😘💕", "Chúc bé 1/6 vui vẻ 🎉🎈", "Thương bé nhiều quá 🥺💖", "Hello cô nàng xinh xắn 👋🌸", "Yêu bé nhiều hơn tất cả 💓😊", "Xinh đẹp và hạnh phúc nha 🌷✨", "Hihihi iu bé quá đi 😄😍", "Cưng bé nhất luôn 🥺💞", "Thương bé vô cùng 🥰💘", "Mãi yêu bé nhé 😍😍", "Tim anh luôn dành cho bé 💘💘", "Iu bé nhiều nha 🥰💖", "Cưng bé vô cùng 😍💓", "Cô bé nhỏ đáng yêu 👧💫", "Chụt chụt yêu bé 💋💋😘", "Muốn ôm bé mãi 🤗❤️", "Bé iu tuyệt vời nhất 🌟😍", "Mèo con của anh 🐱💞", "Muốn bên bé mọi lúc 🥰🤗", "Chúc bé vui vẻ nhé 💐😊", "Bé thích gì anh mua 🎁😉", "Thương bé vô hạn 🥺💖", "Bé yêu của anh nhiều lắm 🥰💓", "Thiên thần nhỏ của tớ 👼✨", "Yêu bé đến tận cùng 😘💕", "Chúc bé 1/6 thật vui 🎉🎈", "Thương bé rất nhiều 🥺💖", "Hello người đẹp của anh 👋🌸", "Yêu bé hơn cả thế giới 💓😊", "Xinh đẹp và hạnh phúc nha 🌷✨", "Hihihi iu bé nhiều quá 😄😍", "Cưng bé mãi luôn 🥺💞", "Thương bé không ngừng 🥰💘", "Mãi yêu bé nha 😍😍", "Tim anh chỉ dành cho bé 💘💘", "Iu bé thật nhiều nha 🥰💖", "Cưng bé lắm luôn 😍💓", "Cô bé nhỏ đáng yêu 👧🌸", "Chụt chụt yêu bé 💋💋😘", "Muốn ôm bé mãi luôn 🤗❤️", "Bé xinh đẹp tuyệt vời 🌟😍", "Mèo con nhỏ bé của anh 🐱💞", "Muốn bên bé nhiều nha 🥰🤗", "Chúc bé hạnh phúc suốt đời 💐😊", "Bé thích gì anh mua choa 🎁😉", "Thương bé nhiều lắm 🥺💖"
+    ];
+
+    // Tạo sao nền trong lớp cố định
+    const starCount = 200;
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      background.appendChild(star);
+    }
+
+    // Tạo sao băng định kỳ trong lớp cố định
+    function createMeteor() {
+      const meteor = document.createElement('div');
+      meteor.className = 'meteor';
+      meteor.style.top = Math.random() * 30 + '%';
+      meteor.style.left = Math.random() * 100 + '%';
+      background.appendChild(meteor);
+      setTimeout(() => meteor.remove(), 1200);
+    }
+
+    // Tạo chữ rơi 3D
+    function createTextParticle() {
+      const el = document.createElement('div');
+      el.className = 'text-particle';
+      el.textContent = messages[Math.floor(Math.random() * messages.length)];
+      el.style.left = Math.random() * 100 + '%';
+      el.style.fontSize = (Math.random() * 10 + 14) + 'px';
+      const z = (Math.random() - 0.5) * 600;
+      const duration = Math.random() * 2 + 4;
+      let start = null;
+      const startY = -100;
+      const endY = window.innerHeight + 100;
+
+      function animate(t) {
+        if (!start) start = t;
+        const p = (t - start) / (duration * 1000);
+        if (p < 1) {
+          const y = startY + (endY - startY) * p;
+          el.style.transform = `translate3d(0, ${y}px, ${z}px)`;
+          requestAnimationFrame(animate);
+        } else {
+          el.remove();
+        }
+      }
+
+      galaxy.appendChild(el);
+      requestAnimationFrame(animate);
+    }
+
+    setInterval(createTextParticle, 200);
+    setInterval(() => {
+      if (Math.random() < 0.3) createMeteor();
+    }, 3000);
+
+    // Điều khiển xoay không gian 3D
+    document.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      rotationY += dx * 0.3;
+      rotationX -= dy * 0.3;
+      galaxy.style.transform = `translate(-50%, -50%) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+
+    // Tự động phát nhạc khi có tương tác đầu tiên
+    const music = document.getElementById('bg-music');
+    const enableMusic = () => {
+      music.play().catch(() => {});
+      document.removeEventListener('click', enableMusic);
+      document.removeEventListener('touchstart', enableMusic);
+    };
+    document.addEventListener('click', enableMusic);
+    document.addEventListener('touchstart', enableMusic);
+  </script>
+</body>
+</html>
