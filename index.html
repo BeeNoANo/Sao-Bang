@@ -107,7 +107,47 @@
     let lastY = 0;
 
     const messages = [
-      "Bé yêu của anh nhiều lắm 🥰💖", "Thiên thần nhỏ của tớ 👼🌟", "Yêu bé vô vàn 😘💕", "Chúc bé 1/6 thật vui nha 🎉🎈", "Thương bé như con 💕🐣", "Hello cô nàng dễ thương 👋🌸", "Yêu bé nhiều hơn mọi thứ 💓😊", "Xinh đẹp và hạnh phúc nhé 🌷✨", "Hihihi iu bé ghê 😄😍", "Cưng bé vô đối 🥺💞", "Thương bé mãi mãi 🥰💘", "Mãi yêu bé nha 😍😍", "Tim anh chỉ dành cho bé 💘💘", "Iu bé thật nhiều 🥰💖", "Cưng bé lắm nha 😍💓", "Cô bé đáng yêu của anh 👧💫", "Chụt chụt bé yêu 💋💋😘", "Muốn ôm bé mãi 🤗❤️", "Bé iu xinh xắn tuyệt vời 🌟😍", "Mèo con bé bỏng của anh 🐱💞", "Muốn bên bé mọi lúc 🥰🤗", "Chúc bé hạnh phúc suốt đời 💐😊", "Bé thích gì anh sẽ mua 🎁😉", "Thương bé nhiều nhiều 🥺💖", "Bé yêu ơi, cười thật tươi nha 😊🌈", "Thiên thần bé nhỏ của anh 👼❤️", "Yêu bé đến tận cùng 😘💕", "Chúc bé luôn vui vẻ nha 🎉😊", "Thương bé không rời 🥰💓", "Hello người đẹp của anh 👋🌹", "Yêu bé cả thế giới 💓🌍", "Xinh đẹp, vui vẻ nha 🌷💫", "Hihihi iu bé quá đi mất 😄😍", "Cưng bé cực luôn 🥺💞", "Thương bé cả đời 🥰💘", "Iu bé hơn cả trời xanh 😍😍", "Mãi mãi bên bé nhé 💘💖", "Iu bé thật nhiều nha 🥰💓", "Cưng lắm, bé ơi 😍💞", "Cô bé nhỏ dễ thương của anh 👧🌸", "Chụt chụt yêu bé 💋💋😘", "Muốn ôm bé mãi luôn 🤗❤️", "Bé xinh đẹp nhất đời 🌟😍", "Mèo con nhỏ của anh 🐱💞", "Muốn luôn bên bé nha 🥰🤗", "Chúc bé luôn hạnh phúc 💐😊", "Bé thích gì anh chiều 🎁😉", "Thương bé vô hạn 🥺💖", "Bé yêu của anh nhất 🥰💓", "Thiên thần nhỏ đáng yêu 👼✨", "Yêu bé hết lòng 😘💕", "Chúc bé 1/6 vui vẻ 🎉🎈", "Thương bé nhiều quá 🥺💖", "Hello cô nàng xinh xắn 👋🌸", "Yêu bé nhiều hơn tất cả 💓😊", "Xinh đẹp và hạnh phúc nha 🌷✨", "Hihihi iu bé quá đi 😄😍", "Cưng bé nhất luôn 🥺💞", "Thương bé vô cùng 🥰💘", "Mãi yêu bé nhé 😍😍", "Tim anh luôn dành cho bé 💘💘", "Iu bé nhiều nha 🥰💖", "Cưng bé vô cùng 😍💓", "Cô bé nhỏ đáng yêu 👧💫", "Chụt chụt yêu bé 💋💋😘", "Muốn ôm bé mãi 🤗❤️", "Bé iu tuyệt vời nhất 🌟😍", "Mèo con của anh 🐱💞", "Muốn bên bé mọi lúc 🥰🤗", "Chúc bé vui vẻ nhé 💐😊", "Bé thích gì anh mua 🎁😉", "Thương bé vô hạn 🥺💖", "Bé yêu của anh nhiều lắm 🥰💓", "Thiên thần nhỏ của tớ 👼✨", "Yêu bé đến tận cùng 😘💕", "Chúc bé 1/6 thật vui 🎉🎈", "Thương bé rất nhiều 🥺💖", "Hello người đẹp của anh 👋🌸", "Yêu bé hơn cả thế giới 💓😊", "Xinh đẹp và hạnh phúc nha 🌷✨", "Hihihi iu bé nhiều quá 😄😍", "Cưng bé mãi luôn 🥺💞", "Thương bé không ngừng 🥰💘", "Mãi yêu bé nha 😍😍", "Tim anh chỉ dành cho bé 💘💘", "Iu bé thật nhiều nha 🥰💖", "Cưng bé lắm luôn 😍💓", "Cô bé nhỏ đáng yêu 👧🌸", "Chụt chụt yêu bé 💋💋😘", "Muốn ôm bé mãi luôn 🤗❤️", "Bé xinh đẹp tuyệt vời 🌟😍", "Mèo con nhỏ bé của anh 🐱💞", "Muốn bên bé nhiều nha 🥰🤗", "Chúc bé hạnh phúc suốt đời 💐😊", "Bé thích gì anh mua choa 🎁😉", "Thương bé nhiều lắm 🥺💖"
+      "Bé yêu của anh nhiều lắm",
+"Thiên thần nhỏ của tớ",
+"Bé iu nhớ ăn sáng nhoa",
+"Chúc bé 1/6 thật vui nha",
+"Mau ăn chóng lớn nha ",
+"Không được thức khuya ấy nhá ",
+"Yêu bé nhiều hơn mọi thứ ",
+"Xinh đẹp và hạnh phúc nhé ",
+"Hihihi iu bé ghê ",
+"Quốc tế thiếu nhi vui vẻ nhoa ",
+"Thương bé mãi mãi ",
+"Mãi yêu bé nha ",
+"Tim anh chỉ dành cho bé",
+"Vui vẻ, hạnh phúc nhoe Đan iu của tớ",
+"Cưng bé lắm nha",
+"Cô bé đáng yêu của anh",
+"Chụt chụt bé yêu 💋",
+"Ăn uống đủ bữa mới ngoan ngoãn nha 🤗",
+"Ngủ sớm nữa nhaa 🌟",
+"Mèo con bé bỏng của anh 🐱",
+"Ngoan anh dẫn đi chơi hihi ",
+"Ngủ ngoan mơ đẹp nhé, cầu mong cho bé không dậy đêm nữa 💐😊",
+"Bé thích gì anh sẽ mua 🎁",
+"Tắm chung đê 🚿🚿",
+"Bé yêu ơi, cười thật tươi nha ",
+"Thiên thần bé nhỏ của anh 👼❤️",
+"Yêu bé đến tận cùng 😘💕",
+"Chúc bé luôn vui vẻ nha 🎉😊",
+"Yêu lắm đó, nhớ bé mọi lúc luôn 🥰💓",
+"Hello người đẹp của anh 👋🌹",
+"Yêu bé cả thế giới 💓🌍",
+"Xinh đẹp, vui vẻ nha 🌷💫",
+"Cưng bé cực luôn 🥺💞",
+"Thương bé cả đời 🥰💘",
+"Iu bé hơn cả trời xanh",
+"Mãi mãi bên bé nhé 💘💖",
+"👅👅👅🦪💦💦💦,
+" Muốn ôm bé ngủ ghê ấy trời",
+"Mai mốt tắm nhớ bật cam nha",
+"Iu ghê :Đ",
+"Muốn QHTD Quan tâm - Hiền Dịu - Tình iu - Dam"
     ];
 
     // Tạo sao nền trong lớp cố định
